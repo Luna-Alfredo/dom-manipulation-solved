@@ -13,7 +13,7 @@
 
 // Your code goes here...
 
-
+const allItems = document.querySelectorAll('.item');
 
 /**
  * @task
@@ -24,7 +24,7 @@
 
 // Your code goes here
 
-
+const main = document.getElementById('main')
 
 /**
  * @task
@@ -34,7 +34,7 @@
  */
 
 // Your code goes here
-
+const favs = document.getElementById('favs');
 
 
 /**
@@ -47,7 +47,20 @@
  */
 
 // Your code goes here
-
+const updatedCollections = (id, direction) => {
+  const item = id - 1;
+  if (direction === 'toMain') {
+    favs.removeChild(allItems[item]);
+    main.appendChild(allItems[item]);
+    allItems[item].firstElementChild.classList.remove('fa-heart-crack');
+    allItems[item].firstElementChild.classList.add('fa-heart-circle-plus');
+  } else if (direction === 'toFavs') {
+    main.removeChild(allItems[item]);
+    favs.appendChild(allItems[item]);
+    allItems[item].firstElementChild.classList.remove('fa-heart-circle-plus');
+    allItems[item].firstElementChild.classList.add('fa-heart-crack');
+  }
+}
 
 
 /**
@@ -65,5 +78,19 @@
  */
 
 // Your code goes here...
+for (const item of allItems) {
+  item.addEventListener('click', () => {
+    currentParentId = item.parentElement.id;
+    currentItemId = parseInt(item.id);
 
+  let direction = '';
+  
+  if (currentParentId === 'main') {
+   direction = 'toFavs';
+  } else if (currentParentId === 'favs') {
+   direction = 'toMain';
+  }
+  updatedCollections(currentItemId, direction);
+  });
+}
 
