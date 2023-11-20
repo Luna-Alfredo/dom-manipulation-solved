@@ -38,3 +38,58 @@
  */
 
 // Your code goes here...
+const cardsContainer = document.querySelector('.cardsContainer');
+const allCards = document.querySelectorAll('.card');
+
+if (!localStorage.getItem('favorites')) {
+  localStorage.setItem('favorites', '');
+}
+
+
+const makeRed = () => {
+  const storageArr = localStorage.getItem('favorites').split(',');
+  for (const card of allCards) {
+    if (storageArr.includes(card.id)) {
+      document.getElementById(card.id).style.backgroundColor = 'red';
+      card.dataset.fav = 'true';
+  }
+}
+}
+
+const addToLS = (id) => {
+  const add = id;
+  const storageArr = localStorage.getItem('favorites').split(',')
+  if (!storageArr.includes(add.toString())) {
+  storageArr.push(add.toString());
+  localStorage.setItem('favorites', storageArr.join(','));
+  }
+}
+
+const removeFromLS = (id) => {
+  const storageArr = localStorage.getItem('favorites').split(',')
+  storageArr.splice(storageArr.indexOf(id.toString()), 1);
+  localStorage.setItem("favorites", storageArr.join(','));
+  document.getElementById(id).style.backgroundColor = 'white';
+
+}
+const callbackFn = (e) => {
+  const item = e.target;
+  const itemId = e.target.id;
+
+  
+  if (item.dataset.fav === 'false') {
+    item.dataset.fav = 'true';
+    addToLS(itemId);
+    makeRed();
+
+  } else if (item.dataset.fav === 'true') {
+    item.dataset.fav = 'false';
+    removeFromLS(itemId);
+  }
+ 
+};
+makeRed();
+cardsContainer.addEventListener('click', callbackFn);
+
+
+
